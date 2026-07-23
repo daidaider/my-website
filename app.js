@@ -35,7 +35,7 @@ function renderCard(item, page) {
   const rows = isOrchard ? [detail && `<p class="place-info">${escapeHtml(detail)}</p>`] : [item.address && `<p class="place-info">${escapeHtml(item.address)}</p>`, item.phone && `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>`, item.hours && `<p class="place-info"><strong>營業時間：</strong>${escapeHtml(item.hours)}</p>`, item.closed && `<p class="place-info"><strong>公休日：</strong>${escapeHtml(item.closed)}</p>`, detail && `<p class="place-info">${escapeHtml(detail)}</p>`];
   const actions = [`<a class="place-action" href="${map}" target="_blank" rel="noopener">Google 地圖</a>`];
   const social = cleanUrl(item.social); if (social) actions.push(`<a class="place-action" href="${social}" target="_blank" rel="noopener">${isOrchard ? '園區 FB' : '更多資訊'}</a>`);
-  return `<article class="place-card"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3>${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></article>`;
+  return `<article class="place-card"><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p>${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></article>`;
 }
 
 async function loadPage() {
