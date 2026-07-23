@@ -45,20 +45,21 @@ async function loadPage() {
   try {
     const response = await fetch(SHEETS[page]); if (!response.ok) throw new Error('資料讀取失敗');
     const data = page === 'orchards' ? orchardRows(parseCsv(await response.text())) : attractionRows(parseCsv(await response.text()));
-    let selected = page === 'attractions' ? '景點' : '';
+    const selectedTypes = new Set(page === 'attractions' ? ['景點', '美食'] : []);
     let keyword = '';
     const draw = () => {
-      const filtered = page === 'attractions' ? data.filter(item => item.type === selected && [item.name, item.address, item.feature].join(' ').toLowerCase().includes(keyword)) : data;
+      const filtered = page === 'attractions' ? data.filter(item => selectedTypes.has(item.type) && [item.name, item.address, item.feature].join(' ').toLowerCase().includes(keyword)) : data;
+      document.querySelectorAll('.filter-button').forEach(button => {
+        const active = selectedTypes.has(button.dataset.filter);
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
       counter.textContent = `共 ${filtered.length} 筆`;
       list.innerHTML = filtered.length ? filtered.map(item => renderCard(item, page)).join('') : '<p class="error-message">目前沒有符合的資料。</p>';
     };
     document.querySelectorAll('.filter-button').forEach(button => button.addEventListener('click', () => {
-      selected = button.dataset.filter;
-      document.querySelectorAll('.filter-button').forEach(item => {
-        const active = item === button;
-        item.classList.toggle('active', active);
-        item.setAttribute('aria-pressed', String(active));
-      });
+      const type = button.dataset.filter;
+      if (selectedTypes.has(type)) selectedTypes.delete(type); else selectedTypes.add(type);
       draw();
     }));
     const search = document.querySelector('#place-search');
