@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="苗栗公館紅棗園採果資訊與聯絡名單。" />
+    <title>紅棗園｜漫遊公館</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .orchard-intro {
+        background-image: linear-gradient(90deg, rgba(245, 237, 223, .97) 34%, rgba(245, 237, 223, .68) 53%, rgba(245, 237, 223, .08) 76%), url("assets/jujube-orchard.jpg");
+        background-position: center, center 52%;
+      }
+    </style>
+  </head>
+  <body data-page="orchards">
+    <header class="site-header"><a class="brand" href="index.html"><span>漫遊</span>公館</a><nav aria-label="主選單"><a class="active" href="red-date-orchards.html">紅棗園</a><a href="other-attractions.html">其他景點</a></nav></header>
+    <main class="listing-page">
+      <section class="page-intro orchard-intro"><p class="eyebrow">Jujube Picking</p><h1>走進紅棗園，<br />嚐一口公館的夏天</h1><p>點選園區即可開啟地圖、撥打電話或前往 Facebook。</p></section>
+      <aside class="notice" aria-label="採果提醒"><div class="notice-icon">☀</div><div><p class="notice-title">採果小提醒</p><ul><li>在棗園內請勿撐傘</li><li>請勿邊採邊吃</li><li>請注意防曬，不要中暑呦！</li></ul></div></aside>
+      <section class="list-section"><div class="section-heading"><p class="eyebrow">Orchard list</p><h2>紅棗園名單</h2><span id="result-count" aria-live="polite"></span></div><div id="card-list" class="card-list" aria-live="polite"><p class="loading">正在載入園區資料⋯</p></div></section>
+    </main>
+    <footer>公館旅遊名單 ・ 資料由在地公開資訊整理</footer><script src="app.js"></script>
+  </body>
+</html>
