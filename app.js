@@ -48,7 +48,13 @@ async function loadPage() {
     const selectedTypes = new Set(page === 'attractions' ? ['景點', '美食'] : []);
     let keyword = '';
     const draw = () => {
-      const filtered = page === 'attractions' ? data.filter(item => selectedTypes.has(item.type) && [item.name, item.address, item.feature].join(' ').toLowerCase().includes(keyword)) : data;
+      const filtered = data.filter(item => {
+        if (page === 'attractions' && !selectedTypes.has(item.type)) return false;
+        const searchable = page === 'orchards'
+          ? [item.name, item.phone, item.detail, item.note]
+          : [item.name, item.address, item.feature];
+        return searchable.join(' ').toLowerCase().includes(keyword);
+      });
       document.querySelectorAll('.filter-button').forEach(button => {
         const active = selectedTypes.has(button.dataset.filter);
         button.classList.toggle('active', active);
