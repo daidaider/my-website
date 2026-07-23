@@ -46,7 +46,12 @@ async function loadPage() {
     const response = await fetch(SHEETS[page]); if (!response.ok) throw new Error('資料讀取失敗');
     const data = page === 'orchards' ? orchardRows(parseCsv(await response.text())) : attractionRows(parseCsv(await response.text()));
     let selected = page === 'attractions' ? '景點' : '';
-    const draw = () => { const filtered = page === 'attractions' ? data.filter(item => item.type === selected) : data; counter.textContent = `共 ${filtered.length} 筆`; list.innerHTML = filtered.length ? filtered.map(item => renderCard(item, page)).join('') : '<p class="error-message">目前沒有符合的資料。</p>'; };
+    let keyword = '';
+    const draw = () => {
+      const filtered = page === 'attractions' ? data.filter(item => item.type === selected && [item.name, item.address, item.feature].join(' ').toLowerCase().includes(keyword)) : data;
+      counter.textContent = `共 ${filtered.length} 筆`;
+      list.innerHTML = filtered.length ? filtered.map(item => renderCard(item, page)).join('') : '<p class="error-message">目前沒有符合的資料。</p>';
+    };
     document.querySelectorAll('.filter-button').forEach(button => button.addEventListener('click', () => {
       selected = button.dataset.filter;
       document.querySelectorAll('.filter-button').forEach(item => {
@@ -56,6 +61,8 @@ async function loadPage() {
       });
       draw();
     }));
+    const search = document.querySelector('#place-search');
+    if (search) search.addEventListener('input', () => { keyword = search.value.trim().toLowerCase(); draw(); });
     draw();
   } catch (error) { list.innerHTML = '<p class="error-message">暫時無法載入資料，請稍後再試。</p>'; counter.textContent = ''; }
 }
