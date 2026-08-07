@@ -47,9 +47,9 @@ function renderCard(item, page) {
   const actions = [`<a class="place-action" href="${map}" target="_blank" rel="noopener">Google 地圖</a>`];
   const social = cleanUrl(item.social); if (social) actions.push(`<a class="place-action" href="${social}" target="_blank" rel="noopener">${isOrchard ? '園區 FB' : '更多資訊'}</a>`);
   const photo = isOrchard ? ORCHARD_PHOTOS[item.name] : '';
-  const content = `<div class="place-card-copy"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3>${featureTag}${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></div>`;
-  const photoMarkup = photo ? `<img class="orchard-photo" src="${photo}" alt="${title} 現場照片" loading="lazy" />` : '';
-  return `<article class="place-card${photo ? ' place-card--with-photo' : ''}">${content}${photoMarkup}</article>`;
+  const titleMarkup = `<div class="place-title-row"><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3>${photo ? `<img class="orchard-photo" src="${photo}" alt="${title} 現場照片" loading="lazy" />` : ''}</div>`;
+  const content = `<div class="place-card-copy"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p>${titleMarkup}${featureTag}${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></div>`;
+  return `<article class="place-card${photo ? ' place-card--with-photo' : ''}">${content}</article>`;
 }
 
 async function loadPage() {
