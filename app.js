@@ -9,7 +9,9 @@ const ORCHARD_PHOTOS = {
   '來來紅棗園': 'assets/orchards/lailai.svg',
   '迪大紅棗園': 'assets/orchards/dida.svg',
   '棗到幸福紅棗園': 'assets/orchards/zaodao-xingfu.svg',
+  '棗到幸福': 'assets/orchards/zaodao-xingfu.svg',
   '徐家紅棗園': 'assets/orchards/xujia.svg',
+  '徐家紅棗果園': 'assets/orchards/xujia.svg',
   '迴哥紅棗園': 'assets/orchards/huige.svg'
 };
 
