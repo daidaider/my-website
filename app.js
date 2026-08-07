@@ -3,6 +3,16 @@ const SHEETS = {
   attractions: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSFlzdqDK8om4K8c8-WnEE32VTBbeoWvUx32HUv_jj23pVz8dVVyUHffbD2B0m9wJT0zT-1f-H4X-4/pub?gid=1574629393&single=true&output=csv'
 };
 
+const ORCHARD_PHOTOS = {
+  '吉秀紅棗園': 'assets/orchards/jixiu.svg',
+  '錦城紅棗園': 'assets/orchards/jincheng.svg',
+  '來來紅棗園': 'assets/orchards/lailai.svg',
+  '迪大紅棗園': 'assets/orchards/dida.svg',
+  '棗到幸福紅棗園': 'assets/orchards/zaodao-xingfu.svg',
+  '徐家紅棗園': 'assets/orchards/xujia.svg',
+  '迴哥紅棗園': 'assets/orchards/huige.svg'
+};
+
 const parseCsv = (text) => {
   const rows = []; let row = []; let cell = ''; let quote = false;
   for (let i = 0; i < text.length; i += 1) {
@@ -36,7 +46,10 @@ function renderCard(item, page) {
   const rows = isOrchard ? [] : [item.address && `<p class="place-info">${escapeHtml(item.address)}</p>`, item.phone && `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>`, item.hours && `<p class="place-info"><strong>營業時間：</strong>${escapeHtml(item.hours)}</p>`, item.closed && `<p class="place-info"><strong>公休日：</strong>${escapeHtml(item.closed)}</p>`];
   const actions = [`<a class="place-action" href="${map}" target="_blank" rel="noopener">Google 地圖</a>`];
   const social = cleanUrl(item.social); if (social) actions.push(`<a class="place-action" href="${social}" target="_blank" rel="noopener">${isOrchard ? '園區 FB' : '更多資訊'}</a>`);
-  return `<article class="place-card"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3>${featureTag}${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></article>`;
+  const photo = isOrchard ? ORCHARD_PHOTOS[item.name] : '';
+  const content = `<div class="place-card-copy"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3>${featureTag}${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></div>`;
+  const photoMarkup = photo ? `<img class="orchard-photo" src="${photo}" alt="${title} 現場照片" loading="lazy" />` : '';
+  return `<article class="place-card${photo ? ' place-card--with-photo' : ''}">${content}${photoMarkup}</article>`;
 }
 
 async function loadPage() {
