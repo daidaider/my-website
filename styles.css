@@ -17,3 +17,15 @@
 
 /* 卡片連結列固定對齊底部 */
 .place-card-copy{display:flex;flex:1;flex-direction:column;min-width:0}
+
+/* 首頁活動紀錄 */
+.activity-records{max-width:1120px;margin:0 auto 70px;padding:0 30px}
+.activity-heading{margin-bottom:22px}
+.activity-heading .eyebrow{margin:0 0 7px}
+.activity-heading h2{margin:0;color:var(--ink);font-size:30px}
+.activity-heading>p:last-child{margin:8px 0 0;color:var(--muted)}
+.activity-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0;padding:0;list-style:none}
+.activity-list li{display:flex;flex-direction:column;gap:10px;min-height:112px;padding:20px;border:1px solid #e5ded3;border-radius:16px;background:#fff}
+.activity-list time{color:var(--orange);font-size:14px;font-weight:800;letter-spacing:.04em}
+.activity-list strong{color:var(--ink);font-size:18px;line-height:1.45}
+@media(max-width:720px){.activity-records{margin-bottom:42px;padding:0 20px}.activity-heading h2{font-size:26px}.activity-list{grid-template-columns:1fr;gap:10px}.activity-list li{min-height:0;padding:17px}}
