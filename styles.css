@@ -14,3 +14,6 @@
 .discovery-tools .filter-button::before{content:'○';display:inline-grid;place-items:center;width:18px;height:18px;margin-right:7px;border-radius:50%;color:#a7a29b;font-size:18px;line-height:1}
 .discovery-tools .filter-button.active::before{content:'✓';background:#3f684e;color:#fff;font-size:12px;font-weight:800}
 .discovery-tools .filter-button .filter-icon{margin-right:4px}
+
+/* 卡片連結列固定對齊底部 */
+.place-card-copy{display:flex;flex:1;flex-direction:column;min-width:0}
