@@ -18,21 +18,46 @@
 /* 卡片連結列固定對齊底部 */
 .place-card-copy{display:flex;flex:1;flex-direction:column;min-width:0}
 
-/* 首頁時程規劃 */
-.activity-records{max-width:1120px;margin:0 auto 70px;padding:0 30px}
+/* 首頁活動輪播：棗起！寮一下 CIS */
+.schedule-carousel{
+  --jujube-red:#9B1E00;
+  --fresh-red:#DA181F;
+  --sprout:#D9E66F;
+  --clay-white:#E3E9DD;
+  --sky-blue:#A7CBFB;
+  --gold-soil:#BDA36F;
+  max-width:1120px;
+  margin:0 auto 70px;
+  padding:0 30px;
+}
 .activity-heading{margin-bottom:28px;text-align:center}
-.activity-heading .eyebrow{margin:0 0 7px}
-.activity-heading h2{margin:0;color:var(--ink);font-size:30px}
-.activity-heading>p:last-child{margin:8px 0 0;color:var(--muted)}
-.schedule-list{position:relative;display:grid;grid-template-columns:repeat(2,1fr);gap:28px 86px;max-width:820px;margin:0 auto;padding:20px 0;list-style:none}
-.schedule-list::before{content:'';position:absolute;top:0;bottom:0;left:50%;border-left:2px dashed #d9cfc1}
-.schedule-card{position:relative;z-index:1;width:min(100%,280px);min-height:178px;padding:20px 22px 22px;border:1px solid #e5ded3;border-radius:24px;background:#fff;box-shadow:0 10px 20px #5d46331a}
-.schedule-card:nth-child(odd){justify-self:end;transform:rotate(1.6deg);background:#fffaf1}
-.schedule-card:nth-child(even){justify-self:start;transform:rotate(-1.6deg);background:#f6faf6}
-.schedule-pin{display:grid;place-items:center;width:28px;height:28px;margin:-34px auto 10px;border-radius:50%;background:#ef6e39;color:#fff;border:3px solid #fff;box-shadow:0 2px 5px #5d463333;font-size:0}
-.schedule-pin::after{content:'';width:8px;height:8px;border-radius:50%;background:currentColor}
-.schedule-number{display:block;margin-bottom:8px;color:#ef6e39;font-size:32px;font-weight:800;line-height:1}
-.schedule-card:nth-child(even) .schedule-number,.schedule-card:nth-child(even) time{color:#3f684e}
-.schedule-card time{display:block;margin-bottom:8px;color:#c55c2b;font-size:14px;font-weight:800}
-.schedule-card h3{margin:0;color:var(--ink);font-size:21px;line-height:1.35}
-@media(max-width:720px){.activity-records{margin-bottom:42px;padding:0 20px}.activity-heading h2{font-size:26px}.schedule-list{grid-template-columns:1fr;gap:24px;margin-left:12px;padding-left:24px}.schedule-list::before{left:0}.schedule-card,.schedule-card:nth-child(odd),.schedule-card:nth-child(even){justify-self:stretch;width:auto;transform:none}.schedule-pin{position:absolute;left:-39px;top:34px;margin:0}.schedule-number{font-size:28px}}
+.activity-heading .eyebrow{margin:0 0 7px;color:var(--jujube-red);font-family:Futura,"Noto Sans TC",sans-serif;font-weight:700;letter-spacing:.16em}
+.activity-heading h2{margin:0;color:var(--jujube-red);font-family:"Noto Sans TC",sans-serif;font-size:32px;font-weight:900}
+.activity-heading>p:last-child{margin:8px 0 0;color:#554942}
+.schedule-carousel-shell{position:relative;display:flex;align-items:center;gap:16px;max-width:980px;margin:0 auto}
+.schedule-viewport{flex:1;overflow:hidden;border:3px solid var(--jujube-red);border-radius:28px;background:var(--clay-white);box-shadow:0 16px 30px #9b1e0022}
+.schedule-slide{display:none;grid-template-columns:minmax(0,1fr) minmax(230px,.38fr);align-items:stretch;min-height:430px;background:var(--clay-white)}
+.schedule-slide.is-active{display:grid;animation:schedule-fade .3s ease}
+.schedule-photo{display:grid;place-items:center;min-height:0;background:linear-gradient(135deg,#f7f3ed 0%,var(--clay-white) 100%)}
+.schedule-photo img{display:block;width:100%;height:100%;max-height:430px;object-fit:contain}
+.schedule-copy{display:flex;flex-direction:column;justify-content:center;gap:12px;padding:38px 30px;background:linear-gradient(160deg,var(--jujube-red),#711600);color:#fff}
+.schedule-copy time{display:inline-flex;align-self:flex-start;padding:6px 11px;border-radius:999px;background:var(--sprout);color:#263313;font-family:Futura,"Noto Sans TC",sans-serif;font-size:15px;font-weight:800;letter-spacing:.08em}
+.schedule-copy h3{margin:0;font-family:"Noto Sans TC",sans-serif;font-size:31px;font-weight:900;line-height:1.35}
+.schedule-arrow{display:grid;place-items:center;flex:0 0 auto;width:46px;height:46px;padding:0;border:0;border-radius:50%;background:var(--fresh-red);color:#fff;font-family:Futura,sans-serif;font-size:28px;line-height:1;cursor:pointer;box-shadow:0 6px 14px #9b1e0033;transition:transform .2s ease,background .2s ease}
+.schedule-arrow:hover{background:var(--jujube-red);transform:translateY(-2px)}
+.schedule-dots{display:flex;justify-content:center;gap:10px;margin-top:18px}
+.schedule-dots button{width:11px;height:11px;padding:0;border:0;border-radius:99px;background:#d5c4b8;cursor:pointer;transition:width .2s ease,background .2s ease}
+.schedule-dots button.is-active{width:31px;background:var(--fresh-red)}
+@keyframes schedule-fade{from{opacity:.4;transform:translateX(10px)}to{opacity:1;transform:none}}
+@media(max-width:720px){
+  .schedule-carousel{margin-bottom:42px;padding:0 20px}
+  .activity-heading h2{font-size:27px}
+  .schedule-carousel-shell{gap:8px}
+  .schedule-arrow{width:36px;height:36px;font-size:22px}
+  .schedule-viewport{border-width:2px;border-radius:22px}
+  .schedule-slide.is-active{grid-template-columns:1fr;min-height:0}
+  .schedule-photo{min-height:270px}
+  .schedule-photo img{max-height:360px}
+  .schedule-copy{gap:8px;padding:20px 22px}
+  .schedule-copy h3{font-size:25px}
+}
