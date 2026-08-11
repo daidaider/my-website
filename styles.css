@@ -118,3 +118,9 @@ footer{border-top:1px solid #9B1E0018;background:#fff7ed;color:#6d625c}
   .home-cards .feature-card{border-radius:20px}
   .place-card{border-radius:18px}
 }
+
+
+/* 還原照片原始色彩：CIS 僅用於介面，不套用於照片 */
+.hero{background-color:transparent;background-blend-mode:normal}
+.feature-card::before{background:linear-gradient(135deg,#542d24d9,#ad5231a8)}
+.attraction-card::before{background:linear-gradient(135deg,#264e43dc,#6f925ba6)}
