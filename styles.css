@@ -150,3 +150,16 @@ footer{border-top:1px solid #9B1E0018;background:#fff7ed;color:#6d625c}
 .hero>*,.page-intro>*,.feature-card>*{position:relative;z-index:1}
 .schedule-photo{overflow:hidden}
 .schedule-photo img{filter:brightness(.88) saturate(.96)}
+
+
+/* 首頁封面以同一圖層繪製照片與濾鏡，避免兩者錯位 */
+.home-page .hero{background-image:none!important;background-position:center;background-size:cover}
+.home-page .hero::before{
+  background-image:linear-gradient(115deg,rgba(41,31,26,.56),rgba(94,70,55,.28)),var(--hero-image);
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+/* 降低紅色濾鏡濃度，保留文字辨識度 */
+.feature-card::before{background:linear-gradient(135deg,rgba(45,35,29,.58),rgba(101,75,57,.28))}
+.attraction-card::before{background:linear-gradient(135deg,rgba(31,59,51,.58),rgba(74,99,75,.28))}
