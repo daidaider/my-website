@@ -130,3 +130,23 @@ footer{border-top:1px solid #9B1E0018;background:#fff7ed;color:#6d625c}
 .feature-card::before{display:none}
 .feature-card{color:#fff;text-shadow:0 1px 4px #1d110999}
 .schedule-photo{background:transparent}
+
+
+/* 照片濾鏡：遮罩與照片容器完全重疊 */
+.hero,.page-intro,.feature-card{position:relative;isolation:isolate;overflow:hidden}
+.hero::before,.page-intro::before,.feature-card::before{
+  content:"";
+  display:block;
+  position:absolute;
+  inset:0;
+  z-index:0;
+  border-radius:inherit;
+  pointer-events:none;
+}
+.hero::before{background:linear-gradient(115deg,rgba(45,18,12,.74),rgba(155,30,0,.38))}
+.page-intro::before{background:linear-gradient(105deg,rgba(227,233,221,.90),rgba(227,233,221,.48))}
+.feature-card::before{background:linear-gradient(135deg,rgba(84,45,36,.76),rgba(173,82,49,.53))}
+.attraction-card::before{background:linear-gradient(135deg,rgba(38,78,67,.75),rgba(111,146,91,.50))}
+.hero>*,.page-intro>*,.feature-card>*{position:relative;z-index:1}
+.schedule-photo{overflow:hidden}
+.schedule-photo img{filter:brightness(.88) saturate(.96)}
