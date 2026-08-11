@@ -61,3 +61,9 @@
   .schedule-copy{gap:8px;padding:20px 22px}
   .schedule-copy h3{font-size:25px}
 }
+
+/* 頁首品牌標誌 */
+.brand.brand--jujube{display:inline-flex;align-items:center;gap:10px;letter-spacing:0}
+.brand.brand--jujube .brand-logo{width:64px;height:44px;object-fit:contain;display:block;mix-blend-mode:multiply}
+.brand.brand--jujube .brand-label{margin:0;color:var(--red);font-family:"Noto Sans TC",sans-serif;font-size:24px;font-weight:800;letter-spacing:.02em}
+@media(max-width:720px){.brand.brand--jujube{gap:7px}.brand.brand--jujube .brand-logo{width:52px;height:36px}.brand.brand--jujube .brand-label{font-size:20px}}
