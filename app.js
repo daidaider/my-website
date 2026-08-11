@@ -88,4 +88,30 @@ async function loadPage() {
     draw();
   } catch (error) { list.innerHTML = '<p class="error-message">暫時無法載入資料，請稍後再試。</p>'; counter.textContent = ''; }
 }
+function initScheduleCarousel() {
+  const carousel = document.querySelector('[data-schedule-carousel]');
+  if (!carousel) return;
+  const slides = Array.from(carousel.querySelectorAll('[data-schedule-slide]'));
+  const dots = Array.from(carousel.querySelectorAll('.schedule-dots button'));
+  const previous = carousel.querySelector('.schedule-prev');
+  const next = carousel.querySelector('.schedule-next');
+  let activeIndex = 0;
+  const show = index => {
+    activeIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, itemIndex) => {
+      const isActive = itemIndex === activeIndex;
+      slide.classList.toggle('is-active', isActive);
+      slide.setAttribute('aria-hidden', String(!isActive));
+    });
+    dots.forEach((dot, itemIndex) => {
+      const isActive = itemIndex === activeIndex;
+      dot.classList.toggle('is-active', isActive);
+      dot.setAttribute('aria-selected', String(isActive));
+    });
+  };
+  previous.addEventListener('click', () => show(activeIndex - 1));
+  next.addEventListener('click', () => show(activeIndex + 1));
+  dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
+}
+initScheduleCarousel();
 loadPage();
