@@ -53,8 +53,9 @@ function renderCard(item, page) {
   const social = cleanUrl(item.social); if (social) actions.push(`<a class="place-action" href="${social}" target="_blank" rel="noopener">${isOrchard ? '園區 FB' : '更多資訊'}</a>`);
   const photo = isOrchard ? ORCHARD_PHOTOS[item.name] : '';
   const titleMarkup = isOrchard ? `<div class="place-title-row"><div class="place-title-copy"><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3>${featureTag || ''}</div>${photo ? `<img class="orchard-photo" src="${photo}" alt="${title} 現場照片" loading="lazy" />` : ''}</div>` : `<div class="place-title-row"><h3><a href="${map}" target="_blank" rel="noopener">${title}</a></h3></div>`;
-  const content = `<div class="place-card-copy"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p>${titleMarkup}${!isOrchard ? featureTag : ''}${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></div>`;
-  return `<article class="place-card${photo ? ' place-card--with-photo' : ''}">${content}</article>`;
+  const detailSlot = isOrchard ? '' : `<div class="place-feature-slot">${featureTag || ''}</div>`;
+  const content = `<div class="place-card-copy"><p class="place-type">${isOrchard ? '紅棗園' : escapeHtml(item.type)}</p>${titleMarkup}${detailSlot}${isOrchard && item.phone ? `<p class="place-info"><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : ''}${rows.filter(Boolean).join('')}<div class="place-actions">${actions.join('')}</div></div>`;
+  return `<article class="place-card${isOrchard ? ' place-card--orchard' : ' place-card--attraction'}${photo ? ' place-card--with-photo' : ''}">${content}</article>`;
 }
 
 async function loadPage() {
