@@ -5,8 +5,10 @@
 
 .place-card--with-photo{display:flex;flex-direction:column}
 .place-card--with-photo .place-card-copy{display:flex;flex-direction:column;min-width:0}
-.place-title-row{display:flex;align-items:center;gap:10px;min-height:96px;margin:0 0 11px}
-.place-title-row h3{flex:1;margin:0}
+.place-title-row{display:flex;align-items:flex-start;gap:10px;min-height:96px;margin:0 0 11px}
+.place-title-copy{display:flex;flex:1;flex-direction:column;align-self:stretch;justify-content:flex-start;min-width:0}
+.place-title-row h3{margin:0}
+.place-title-copy .place-feature{margin:8px 0 0}
 .orchard-photo{width:96px;height:96px;min-height:0;flex:0 0 96px;object-fit:cover;object-position:center;background:#f5ede0;border-radius:12px}
 @media(max-width:720px){.place-title-row{gap:8px;min-height:80px}.orchard-photo{width:80px;height:80px;flex-basis:80px}}
 
