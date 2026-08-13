@@ -70,3 +70,23 @@
 .brand.brand--jujube .brand-logo{width:64px;height:44px;object-fit:contain;display:block;mix-blend-mode:multiply}
 .brand.brand--jujube .brand-label{margin:0;color:var(--red);font-family:"Noto Sans TC",sans-serif;font-size:24px;font-weight:800;letter-spacing:.02em}
 @media(max-width:720px){.brand.brand--jujube{gap:7px}.brand.brand--jujube .brand-logo{width:52px;height:36px}.brand.brand--jujube .brand-label{font-size:20px}}
+
+
+/* 頁尾合作單位標誌 */
+.site-footer{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  padding:32px 24px;
+}
+.partner-logos{
+  display:block;
+  width:min(860px, 100%);
+  height:auto;
+  object-fit:contain;
+}
+@media (max-width:720px){
+  .site-footer{gap:12px;padding:26px 20px}
+  .partner-logos{width:min(100%, 520px)}
+}
