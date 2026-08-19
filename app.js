@@ -3,6 +3,21 @@ const SHEETS = {
   attractions: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSFlzdqDK8om4K8c8-WnEE32VTBbeoWvUx32HUv_jj23pVz8dVVyUHffbD2B0m9wJT0zT-1f-H4X-4/pub?gid=1574629393&single=true&output=csv'
 };
 
+const ORCHARD_COORDINATES = {
+  '棗三枚紅棗園': { lat: 24.4973709, lng: 120.8298095 },
+  '渤海紅棗園': { lat: 24.4749823, lng: 120.819866 },
+  '吉秀紅棗園': { lat: 24.4746568, lng: 120.8266333 },
+  '逢彬紅棗園': { lat: 24.4740412, lng: 120.825042 },
+  '迪大紅棗園': { lat: 24.4750057, lng: 120.8202573 },
+  '玉順紅棗園': { lat: 24.4792616, lng: 120.8134005 },
+  '徐家紅棗果園': { lat: 24.4723271, lng: 120.8199054 },
+  '錦城紅棗園': { lat: 24.4918699, lng: 120.8170218 },
+  '迴哥紅棗園': { lat: 24.4870943, lng: 120.8146848 },
+  '棗美金': { lat: 24.472658, lng: 120.821315 },
+  '來來紅棗園': { lat: 24.4723387, lng: 120.8272425 },
+  '棗到幸福': { lat: 24.5143714, lng: 120.8378231 }
+};
+
 const ORCHARD_PHOTOS = {
   '吉秀紅棗園': 'assets/orchards/jixiu.svg',
   '錦城紅棗園': 'assets/orchards/jincheng.svg',
@@ -36,7 +51,15 @@ const cleanUrl = (value = '') => (value.match(/https?:\/\/[^\s,]+/) || [])[0] ||
 const mapUrl = (map, address, name) => cleanUrl(map) || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address || name)}`;
 const phoneUrl = phone => `tel:${phone.replace(/[^+\d]/g, '')}`;
 
-const orchardRows = rows => rows.slice(1).filter(row => row[0]).map(row => ({ name: row[0], phone: row[1], map: row[2], detail: row[3], social: row[4], note: row[5] }));
+const orchardRows = rows => rows.slice(1).filter(row => row[0]).map(row => ({
+  name: row[0],
+  phone: row[1],
+  map: row[2],
+  detail: row[3],
+  social: row[4],
+  note: row[5],
+  ...(ORCHARD_COORDINATES[row[0]] || {})
+}));
 const attractionRows = rows => {
   let type = '';
   return rows.slice(1).map(row => { type = row[0] || type; return { type, name: row[1], address: row[2], map: row[3], feature: row[5], closed: row[6], hours: row[7], phone: row[8], social: row[9] }; }).filter(item => item.name && item.type);
@@ -58,12 +81,49 @@ function renderCard(item, page) {
   return `<article class="place-card${isOrchard ? ' place-card--orchard' : ' place-card--attraction'}${photo ? ' place-card--with-photo' : ''}">${content}</article>`;
 }
 
+function renderOrchardMap(container, orchards, leaflet) {
+  if (!container || !leaflet) throw new Error('地圖元件載入失敗');
+  container.replaceChildren();
+  const map = leaflet.map(container);
+  leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const positions = [];
+  orchards.forEach(item => {
+    if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return;
+    const position = [item.lat, item.lng];
+    positions.push(position);
+    const phone = item.phone ? `<p><strong>電話：</strong><a href="${phoneUrl(item.phone)}">${escapeHtml(item.phone)}</a></p>` : '';
+    const social = cleanUrl(item.social);
+    const socialLink = social ? `<a href="${social}" target="_blank" rel="noopener">園區 FB</a>` : '';
+    const navigation = `<a href="${mapUrl(item.map, '', item.name)}" target="_blank" rel="noopener">Google 地圖導航</a>`;
+    const actions = [navigation, socialLink].filter(Boolean).join('<span aria-hidden="true">・</span>');
+    leaflet.marker(position).addTo(map).bindPopup(`<div class="orchard-popup"><h3>${escapeHtml(item.name)}</h3>${phone}<p class="orchard-popup-actions">${actions}</p></div>`);
+  });
+
+  map.invalidateSize();
+  if (positions.length) {
+    const bounds = leaflet.latLngBounds(positions).pad(0.14);
+    map.fitBounds(bounds);
+  }
+  else map.setView([24.49, 120.82], 13);
+  return map;
+}
+
 async function loadPage() {
   const page = document.body.dataset.page; if (!page) return;
-  const list = document.querySelector('#card-list'); const counter = document.querySelector('#result-count');
+  const list = document.querySelector('#card-list'); const mapContainer = document.querySelector('#orchard-map'); const counter = document.querySelector('#result-count');
   try {
     const response = await fetch(SHEETS[page]); if (!response.ok) throw new Error('資料讀取失敗');
     const data = page === 'orchards' ? orchardRows(parseCsv(await response.text())) : attractionRows(parseCsv(await response.text()));
+    if (page === 'orchards') {
+      const mapped = data.filter(item => Number.isFinite(item.lat) && Number.isFinite(item.lng));
+      renderOrchardMap(mapContainer, data, window.L);
+      counter.textContent = `共 ${mapped.length} 個園區`;
+      return;
+    }
     const selectedTypes = new Set(page === 'attractions' ? ['景點', '美食'] : []);
     let keyword = '';
     const draw = () => {
@@ -90,7 +150,7 @@ async function loadPage() {
     const search = document.querySelector('#place-search');
     if (search) search.addEventListener('input', () => { keyword = search.value.trim().toLowerCase(); draw(); });
     draw();
-  } catch (error) { list.innerHTML = '<p class="error-message">暫時無法載入資料，請稍後再試。</p>'; counter.textContent = ''; }
+  } catch (error) { (list || mapContainer).innerHTML = '<p class="error-message">暫時無法載入資料，請稍後再試。</p>'; counter.textContent = ''; }
 }
 function initScheduleCarousel() {
   const carousel = document.querySelector('[data-schedule-carousel]');
@@ -117,5 +177,6 @@ function initScheduleCarousel() {
   next.addEventListener('click', () => show(activeIndex + 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
 }
+if (typeof module !== 'undefined') module.exports = { renderOrchardMap };
 initScheduleCarousel();
 loadPage();
