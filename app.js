@@ -90,6 +90,14 @@ function renderOrchardMap(container, orchards, leaflet) {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
+  const orchardIcon = leaflet.divIcon({
+    className: 'jujube-map-icon',
+    html: '<span class="jujube-pin-leaf" aria-hidden="true"></span><span class="jujube-pin-fruit" aria-hidden="true"><span class="jujube-pin-shine"></span></span><span class="jujube-pin-point" aria-hidden="true"></span>',
+    iconSize: [44, 54],
+    iconAnchor: [22, 51],
+    popupAnchor: [0, -47]
+  });
+
   const positions = [];
   orchards.forEach(item => {
     if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return;
@@ -100,7 +108,7 @@ function renderOrchardMap(container, orchards, leaflet) {
     const socialLink = social ? `<a href="${social}" target="_blank" rel="noopener">園區 FB</a>` : '';
     const navigation = `<a href="${mapUrl(item.map, '', item.name)}" target="_blank" rel="noopener">Google 地圖導航</a>`;
     const actions = [navigation, socialLink].filter(Boolean).join('<span aria-hidden="true">・</span>');
-    leaflet.marker(position).addTo(map).bindPopup(`<div class="orchard-popup"><h3>${escapeHtml(item.name)}</h3>${phone}<p class="orchard-popup-actions">${actions}</p></div>`);
+    leaflet.marker(position, { icon: orchardIcon }).addTo(map).bindPopup(`<div class="orchard-popup"><p class="orchard-popup-kicker">Jujube orchard</p><h3>${escapeHtml(item.name)}</h3>${phone}<p class="orchard-popup-actions">${actions}</p></div>`);
   });
 
   map.invalidateSize();
