@@ -10,7 +10,7 @@ global.document = {
 const { renderOrchardMap } = require('../app.js');
 
 test('在同一張地圖上為每個有座標的紅棗園建立標記與資訊視窗', () => {
-  const calls = { maps: 0, markers: [], bounds: null, order: [], icons: [] };
+  const calls = { maps: 0, markers: [], bounds: null, order: [], icons: [], tileUrl: '' };
   const map = {
     invalidateSize() { calls.order.push('invalidateSize'); },
     fitBounds(bounds) { calls.order.push('fitBounds'); calls.bounds = bounds; },
@@ -22,7 +22,7 @@ test('在同一張地圖上為每個有座標的紅棗園建立標記與資訊�
       assert.equal(container.id, 'orchard-map');
       return map;
     },
-    tileLayer() { return { addTo(target) { assert.equal(target, map); } }; },
+    tileLayer(url) { calls.tileUrl = url; return { addTo(target) { assert.equal(target, map); } }; },
     divIcon(options) { calls.icons.push(options); return { options }; },
     marker(position, options) {
       const marker = {
@@ -48,6 +48,7 @@ test('在同一張地圖上為每個有座標的紅棗園建立標記與資訊�
   assert.equal(calls.markers.length, 2);
   assert.deepEqual(calls.markers.map(marker => marker.position), [[24.47, 120.82], [24.49, 120.81]]);
   assert.equal(calls.icons.length, 1);
+  assert.match(calls.tileUrl, /voyager/i);
   assert.equal(calls.icons[0].className, 'jujube-map-icon');
   assert.match(calls.icons[0].html, /jujube-pin-fruit/);
   assert.ok(calls.markers.every(marker => marker.icon === calls.markers[0].icon));
@@ -56,4 +57,21 @@ test('在同一張地圖上為每個有座標的紅棗園建立標記與資訊�
   assert.match(calls.markers[1].popup, /園區 FB/);
   assert.deepEqual(calls.bounds.positions, [[24.47, 120.82], [24.49, 120.81]]);
   assert.deepEqual(calls.order, ['invalidateSize', 'fitBounds']);
+});
+
+test('地圖下方可依關鍵字顯示原本的紅棗園卡片', () => {
+  const { renderOrchardCards } = require('../app.js');
+  const container = { innerHTML: '' };
+  const counter = { textContent: '' };
+  const orchards = [
+    { name: '甲紅棗園', phone: '0912-345-678', map: 'https://maps.example/a', detail: '入園採果', social: '', note: '' },
+    { name: '乙紅棗園', phone: '0988-000-000', map: 'https://maps.example/b', detail: '', social: '', note: '友善耕作' }
+  ];
+
+  renderOrchardCards(container, counter, orchards, '友善');
+
+  assert.doesNotMatch(container.innerHTML, /甲紅棗園/);
+  assert.match(container.innerHTML, /乙紅棗園/);
+  assert.match(container.innerHTML, /友善耕作/);
+  assert.equal(counter.textContent, '共 1 筆');
 });

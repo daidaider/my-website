@@ -85,9 +85,10 @@ function renderOrchardMap(container, orchards, leaflet) {
   if (!container || !leaflet) throw new Error('地圖元件載入失敗');
   container.replaceChildren();
   const map = leaflet.map(container);
-  leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
+    subdomains: 'abcd',
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
   }).addTo(map);
 
   const orchardIcon = leaflet.divIcon({
@@ -120,16 +121,29 @@ function renderOrchardMap(container, orchards, leaflet) {
   return map;
 }
 
+function renderOrchardCards(container, counter, orchards, keyword = '') {
+  const normalizedKeyword = keyword.trim().toLowerCase();
+  const filtered = orchards.filter(item => [item.name, item.phone, item.detail, item.note].join(' ').toLowerCase().includes(normalizedKeyword));
+  counter.textContent = `共 ${filtered.length} 筆`;
+  container.innerHTML = filtered.length ? filtered.map(item => renderCard(item, 'orchards')).join('') : '<p class="error-message">目前沒有符合的資料。</p>';
+  return filtered;
+}
+
 async function loadPage() {
   const page = document.body.dataset.page; if (!page) return;
-  const list = document.querySelector('#card-list'); const mapContainer = document.querySelector('#orchard-map'); const counter = document.querySelector('#result-count');
+  const list = document.querySelector('#card-list'); const mapContainer = document.querySelector('#orchard-map'); const counter = document.querySelector('#result-count'); const mapCounter = document.querySelector('#map-count');
   try {
     const response = await fetch(SHEETS[page]); if (!response.ok) throw new Error('資料讀取失敗');
     const data = page === 'orchards' ? orchardRows(parseCsv(await response.text())) : attractionRows(parseCsv(await response.text()));
     if (page === 'orchards') {
       const mapped = data.filter(item => Number.isFinite(item.lat) && Number.isFinite(item.lng));
       renderOrchardMap(mapContainer, data, window.L);
-      counter.textContent = `共 ${mapped.length} 個園區`;
+      mapCounter.textContent = `共 ${mapped.length} 個園區`;
+      let orchardKeyword = '';
+      const drawOrchards = () => renderOrchardCards(list, counter, data, orchardKeyword);
+      const orchardSearch = document.querySelector('#place-search');
+      if (orchardSearch) orchardSearch.addEventListener('input', () => { orchardKeyword = orchardSearch.value; drawOrchards(); });
+      drawOrchards();
       return;
     }
     const selectedTypes = new Set(page === 'attractions' ? ['景點', '美食'] : []);
@@ -185,6 +199,6 @@ function initScheduleCarousel() {
   next.addEventListener('click', () => show(activeIndex + 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
 }
-if (typeof module !== 'undefined') module.exports = { renderOrchardMap };
+if (typeof module !== 'undefined') module.exports = { renderOrchardMap, renderOrchardCards };
 initScheduleCarousel();
 loadPage();
