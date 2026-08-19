@@ -18,6 +18,34 @@ const ORCHARD_COORDINATES = {
   '棗到幸福': { lat: 24.5143714, lng: 120.8378231 }
 };
 
+const ATTRACTION_COORDINATES = {
+  '蜜鄉養蜂園': { lat: 24.474289, lng: 120.828628 },
+  '陶瓷博物館': { lat: 24.4895319, lng: 120.8277677 },
+  '五穀文化村': { lat: 24.5176728, lng: 120.8213848 },
+  '穿龍驛站': { lat: 24.4895319, lng: 120.8277677 },
+  '喜妹娜哇稻草民俗藝品': { lat: 24.4798481, lng: 120.8253743 },
+  '台灣油礦陳列館': { lat: 24.460019, lng: 120.8560204 },
+  '公館夜市': { lat: 24.5030321, lng: 120.8241954 },
+  '天福農場': { lat: 24.4682097, lng: 120.8333226 },
+  '巧軒餐館': { lat: 24.4723972, lng: 120.819413 },
+  '福樂麵店': { lat: 24.4723645, lng: 120.8303138 },
+  '紅棗食府': { lat: 24.4750546, lng: 120.8300212 },
+  '夢鼎軒精緻小吃': { lat: 24.5019157, lng: 120.8294673 },
+  '昱程臭豆腐': { lat: 24.502065, lng: 120.8278248 },
+  '上上小吃': { lat: 24.5014173, lng: 120.8272411 },
+  '老車茶飲': { lat: 24.5104328, lng: 120.8253159 },
+  '棗莊古藝庭園膳坊': { lat: 24.4843195, lng: 120.8206174 },
+  '噹噹專業茶飲': { lat: 24.5022033, lng: 120.8275119 },
+  '街上的老房子 by RayWang ☕ COFFEE & ROASTERS': { lat: 24.5011041, lng: 120.8263809 },
+  '穿龍老屋豆腐坊': { lat: 24.4725263, lng: 120.8303673 },
+  '蘭庭甜點舖': { lat: 24.5417564, lng: 120.838348 },
+  '珍香麵店': { lat: 24.5034064, lng: 120.826421 },
+  '哈哈肉焿': { lat: 24.5033712, lng: 120.8278123 },
+  '川綺日式迷你涮涮鍋': { lat: 24.5033834, lng: 120.8297363 },
+  '兄弟小館': { lat: 24.526203, lng: 120.8194402 },
+  '台南汕頭沙茶王沙茶火鍋': { lat: 24.5198964, lng: 120.821567 }
+};
+
 const ORCHARD_PHOTOS = {
   '吉秀紅棗園': 'assets/orchards/jixiu.svg',
   '錦城紅棗園': 'assets/orchards/jincheng.svg',
@@ -62,8 +90,15 @@ const orchardRows = rows => rows.slice(1).filter(row => row[0]).map(row => ({
 }));
 const attractionRows = rows => {
   let type = '';
-  return rows.slice(1).map(row => { type = row[0] || type; return { type, name: row[1], address: row[2], map: row[3], feature: row[5], closed: row[6], hours: row[7], phone: row[8], social: row[9] }; }).filter(item => item.name && item.type);
+  return rows.slice(1).map(row => { type = row[0] || type; return { type, name: row[1], address: row[2], map: row[3], feature: row[5], closed: row[6], hours: row[7], phone: row[8], social: row[9], ...(ATTRACTION_COORDINATES[row[1]] || {}) }; }).filter(item => item.name && item.type);
 };
+
+function addBaseMap(map, leaflet) {
+  leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+}
 
 function renderCard(item, page) {
   const isOrchard = page === 'orchards';
@@ -85,11 +120,7 @@ function renderOrchardMap(container, orchards, leaflet) {
   if (!container || !leaflet) throw new Error('地圖元件載入失敗');
   container.replaceChildren();
   const map = leaflet.map(container);
-  leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    subdomains: 'abcd',
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-  }).addTo(map);
+  addBaseMap(map, leaflet);
 
   const orchardIcon = leaflet.divIcon({
     className: 'jujube-map-icon',
@@ -121,17 +152,33 @@ function renderOrchardMap(container, orchards, leaflet) {
   return map;
 }
 
-function renderOrchardCards(container, counter, orchards, keyword = '') {
-  const normalizedKeyword = keyword.trim().toLowerCase();
-  const filtered = orchards.filter(item => [item.name, item.phone, item.detail, item.note].join(' ').toLowerCase().includes(normalizedKeyword));
-  counter.textContent = `共 ${filtered.length} 筆`;
-  container.innerHTML = filtered.length ? filtered.map(item => renderCard(item, 'orchards')).join('') : '<p class="error-message">目前沒有符合的資料。</p>';
-  return filtered;
+function renderAttractionMap(container, places, leaflet) {
+  if (!container || !leaflet) throw new Error('地圖元件載入失敗');
+  container.replaceChildren();
+  const map = leaflet.map(container);
+  addBaseMap(map, leaflet);
+  const icons = {
+    '景點': leaflet.divIcon({ className: 'attraction-map-icon attraction-map-icon--spot', html: '<span aria-hidden="true">🗺️</span>', iconSize: [40, 46], iconAnchor: [20, 43], popupAnchor: [0, -39] }),
+    '美食': leaflet.divIcon({ className: 'attraction-map-icon attraction-map-icon--food', html: '<span aria-hidden="true">🍜</span>', iconSize: [40, 46], iconAnchor: [20, 43], popupAnchor: [0, -39] })
+  };
+  const positions = [];
+  places.forEach(item => {
+    if (!Number.isFinite(item.lat) || !Number.isFinite(item.lng)) return;
+    const position = [item.lat, item.lng];
+    positions.push(position);
+    const address = item.address ? `<p>${escapeHtml(item.address)}</p>` : '';
+    const navigation = `<a href="${mapUrl(item.map, item.address, item.name)}" target="_blank" rel="noopener">Google 地圖導航</a>`;
+    leaflet.marker(position, { icon: icons[item.type] || icons['景點'] }).addTo(map).bindPopup(`<div class="orchard-popup"><p class="orchard-popup-kicker">${escapeHtml(item.type)}</p><h3>${escapeHtml(item.name)}</h3>${address}<p class="orchard-popup-actions">${navigation}</p></div>`);
+  });
+  map.invalidateSize();
+  if (positions.length) map.fitBounds(leaflet.latLngBounds(positions).pad(0.12));
+  else map.setView([24.49, 120.82], 13);
+  return map;
 }
 
 async function loadPage() {
   const page = document.body.dataset.page; if (!page) return;
-  const list = document.querySelector('#card-list'); const mapContainer = document.querySelector('#orchard-map'); const counter = document.querySelector('#result-count'); const mapCounter = document.querySelector('#map-count');
+  const list = document.querySelector('#card-list'); const mapContainer = document.querySelector('[data-place-map]'); const counter = document.querySelector('#result-count'); const mapCounter = document.querySelector('#map-count');
   try {
     const response = await fetch(SHEETS[page]); if (!response.ok) throw new Error('資料讀取失敗');
     const data = page === 'orchards' ? orchardRows(parseCsv(await response.text())) : attractionRows(parseCsv(await response.text()));
@@ -139,11 +186,12 @@ async function loadPage() {
       const mapped = data.filter(item => Number.isFinite(item.lat) && Number.isFinite(item.lng));
       renderOrchardMap(mapContainer, data, window.L);
       mapCounter.textContent = `共 ${mapped.length} 個園區`;
-      let orchardKeyword = '';
-      const drawOrchards = () => renderOrchardCards(list, counter, data, orchardKeyword);
-      const orchardSearch = document.querySelector('#place-search');
-      if (orchardSearch) orchardSearch.addEventListener('input', () => { orchardKeyword = orchardSearch.value; drawOrchards(); });
-      drawOrchards();
+      return;
+    }
+    if (page === 'attractions') {
+      const mapped = data.filter(item => Number.isFinite(item.lat) && Number.isFinite(item.lng));
+      renderAttractionMap(mapContainer, data, window.L);
+      mapCounter.textContent = `共 ${mapped.length} 個景點與美食`;
       return;
     }
     const selectedTypes = new Set(page === 'attractions' ? ['景點', '美食'] : []);
@@ -199,6 +247,6 @@ function initScheduleCarousel() {
   next.addEventListener('click', () => show(activeIndex + 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
 }
-if (typeof module !== 'undefined') module.exports = { renderOrchardMap, renderOrchardCards };
+if (typeof module !== 'undefined') module.exports = { renderOrchardMap, renderAttractionMap };
 initScheduleCarousel();
 loadPage();

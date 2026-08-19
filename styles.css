@@ -95,23 +95,6 @@
   padding-bottom: clamp(3rem, 7vw, 6rem);
 }
 
-.orchard-map-badge {
-  position: absolute;
-  z-index: 500;
-  top: 74px;
-  right: 18px;
-  border: 2px solid #b98c65;
-  border-radius: 999px;
-  background: #fff7e8;
-  box-shadow: 2px 3px 0 rgba(185, 140, 101, .35);
-  color: #9f3129;
-  font-size: .78rem;
-  font-weight: 800;
-  letter-spacing: .08em;
-  padding: .38rem .8rem;
-  transform: rotate(2deg);
-}
-
 .orchard-map {
   width: 100%;
   height: clamp(420px, 68vh, 720px);
@@ -120,18 +103,6 @@
   border-radius: 24px;
   background: #e8ecdf;
   box-shadow: 0 0 0 2px #b98c65, 0 18px 45px rgba(69, 54, 37, .16);
-}
-
-.orchard-map .leaflet-tile-pane {
-  filter: saturate(.88) sepia(.04) brightness(1.04);
-}
-
-.orchard-list-section {
-  padding-top: .5rem;
-}
-
-.orchard-list-section .section-heading {
-  margin-bottom: 1.25rem;
 }
 
 .jujube-map-icon {
@@ -274,12 +245,23 @@
   }
 }
 
-@media (max-width: 720px) {
-  .orchard-map-badge {
-    top: 70px;
-    right: 12px;
-  }
+.attraction-map-icon {
+  display: grid !important;
+  place-items: center;
+  border: 2px solid #fff !important;
+  border-radius: 50% 50% 50% 12px;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  box-shadow: 0 5px 10px rgba(52, 44, 37, .3);
+  transform: rotate(-45deg);
+}
 
+.attraction-map-icon span { transform: rotate(45deg); }
+.attraction-map-icon--spot { background: #557f6d !important; }
+.attraction-map-icon--food { background: #b95645 !important; }
+
+@media (max-width: 720px) {
   .orchard-map {
     height: 62vh;
     min-height: 430px;
