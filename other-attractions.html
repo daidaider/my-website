@@ -4,7 +4,7 @@
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="苗栗公館景點與美食資訊。" /><title>其他景點｜漫遊公館</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css?v=20260819-shared-map-v1" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" /><link rel="stylesheet" href="styles.css?v=20260819-shared-map-cards-v2" />
     <link rel="stylesheet" href="brand-icon.css?v=ca6612d" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
   </head>
@@ -13,10 +13,11 @@
     <main class="listing-page">
       <section class="page-intro attraction-intro"><p class="eyebrow">Eat & Explore</p><h1>不只紅棗，<br />還有公館的好味道</h1><p>依照今天的心情，選一站景點或一間在地美食。</p></section>
       <section class="list-section orchard-map-section"><div class="section-heading"><p class="eyebrow">Discover map</p><h2>公館景點與美食地圖</h2><span id="map-count" aria-live="polite"></span></div><div id="attraction-map" class="orchard-map" data-place-map aria-label="公館景點與美食互動地圖"><p class="loading">正在載入景點地圖⋯</p></div></section>
+      <section class="list-section orchard-list-section"><div class="section-heading"><p class="eyebrow">Discover</p><h2>公館去哪玩</h2><span id="result-count" aria-live="polite"></span></div><div class="discovery-tools"><div class="filter-group" role="group" aria-label="類型篩選"><button class="filter-button active" type="button" data-filter="景點" aria-pressed="true"><span class="filter-icon" aria-hidden="true">🗺️</span> 人氣景點</button><button class="filter-button active" type="button" data-filter="美食" aria-pressed="true"><span class="filter-icon" aria-hidden="true">🍔</span> 在地美食</button></div><label class="place-search" for="place-search"><span aria-hidden="true">⌕</span><input id="place-search" type="search" placeholder="搜尋景點/美食名稱..." autocomplete="off" /></label></div><div id="card-list" class="card-list" aria-live="polite"><p class="loading">正在載入景點資料⋯</p></div></section>
     </main>
     <footer class="site-footer">
     <img class="partner-logos" src="assets/partner-logos.png" alt="合作單位：公館鄉農會、棗起寮一下、國立聯合大學與聯大文創">
     <span>公館旅遊名單 ・ 資料由在地公開資訊整理</span>
-  </footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script><script src="app.js?v=shared-map-v1"></script>
+  </footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script><script src="app.js?v=shared-map-cards-v2"></script>
   </body>
 </html>

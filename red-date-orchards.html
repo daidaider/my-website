@@ -7,7 +7,7 @@
     <title>紅棗園｜漫遊公館</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260819-shared-map-v1" />
+    <link rel="stylesheet" href="styles.css?v=20260819-shared-map-cards-v2" />
     <link rel="stylesheet" href="brand-icon.css?v=ca6612d" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
     <style>
@@ -23,10 +23,11 @@
       <section class="page-intro orchard-intro"><p class="eyebrow">Jujube Picking</p><h1>走進紅棗園，<br />嚐一口公館的夏天</h1><p>在地圖上點選園區標記，即可查看電話、Facebook 與導航資訊。</p></section>
       <aside class="notice" aria-label="採果提醒"><div class="notice-icon">☀</div><div><p class="notice-title">採果小提醒</p><ul><li>在棗園內請勿撐傘</li><li>請勿邊採邊吃</li><li>請注意防曬，不要中暑呦！</li></ul></div></aside>
       <section class="list-section orchard-map-section"><div class="section-heading"><p class="eyebrow">Orchard map</p><h2>公館紅棗園地圖</h2><span id="map-count" aria-live="polite"></span></div><div id="orchard-map" class="orchard-map" data-place-map aria-label="公館紅棗園互動地圖"><p class="loading">正在載入園區地圖⋯</p></div></section>
+      <section class="list-section orchard-list-section"><div class="section-heading"><p class="eyebrow">Orchard list</p><h2>紅棗園名單</h2><span id="result-count" aria-live="polite"></span></div><div class="discovery-tools"><label class="place-search orchard-search" for="place-search"><span aria-hidden="true">⌕</span><input id="place-search" type="search" placeholder="搜尋紅棗園名稱…" autocomplete="off" /></label></div><div id="card-list" class="card-list" aria-live="polite"><p class="loading">正在載入園區資料⋯</p></div></section>
     </main>
     <footer class="site-footer">
     <img class="partner-logos" src="assets/partner-logos.png" alt="合作單位：公館鄉農會、棗起寮一下、國立聯合大學與聯大文創">
     <span>公館旅遊名單 ・ 資料由在地公開資訊整理</span>
-  </footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script><script src="app.js?v=shared-map-v1"></script>
+  </footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script><script src="app.js?v=shared-map-cards-v2"></script>
   </body>
 </html>

@@ -152,6 +152,14 @@ function renderOrchardMap(container, orchards, leaflet) {
   return map;
 }
 
+function renderOrchardCards(container, counter, orchards, keyword = '') {
+  const normalizedKeyword = keyword.trim().toLowerCase();
+  const filtered = orchards.filter(item => [item.name, item.phone, item.detail, item.note].join(' ').toLowerCase().includes(normalizedKeyword));
+  counter.textContent = `共 ${filtered.length} 筆`;
+  container.innerHTML = filtered.length ? filtered.map(item => renderCard(item, 'orchards')).join('') : '<p class="error-message">目前沒有符合的資料。</p>';
+  return filtered;
+}
+
 function renderAttractionMap(container, places, leaflet) {
   if (!container || !leaflet) throw new Error('地圖元件載入失敗');
   container.replaceChildren();
@@ -186,13 +194,17 @@ async function loadPage() {
       const mapped = data.filter(item => Number.isFinite(item.lat) && Number.isFinite(item.lng));
       renderOrchardMap(mapContainer, data, window.L);
       mapCounter.textContent = `共 ${mapped.length} 個園區`;
+      let orchardKeyword = '';
+      const drawOrchards = () => renderOrchardCards(list, counter, data, orchardKeyword);
+      const orchardSearch = document.querySelector('#place-search');
+      if (orchardSearch) orchardSearch.addEventListener('input', () => { orchardKeyword = orchardSearch.value; drawOrchards(); });
+      drawOrchards();
       return;
     }
     if (page === 'attractions') {
       const mapped = data.filter(item => Number.isFinite(item.lat) && Number.isFinite(item.lng));
       renderAttractionMap(mapContainer, data, window.L);
       mapCounter.textContent = `共 ${mapped.length} 個景點與美食`;
-      return;
     }
     const selectedTypes = new Set(page === 'attractions' ? ['景點', '美食'] : []);
     let keyword = '';
@@ -247,6 +259,6 @@ function initScheduleCarousel() {
   next.addEventListener('click', () => show(activeIndex + 1));
   dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
 }
-if (typeof module !== 'undefined') module.exports = { renderOrchardMap, renderAttractionMap };
+if (typeof module !== 'undefined') module.exports = { renderOrchardMap, renderAttractionMap, renderOrchardCards };
 initScheduleCarousel();
 loadPage();

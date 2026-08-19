@@ -7,7 +7,7 @@ global.document = {
   querySelectorAll: () => []
 };
 
-const { renderOrchardMap, renderAttractionMap } = require('../app.js');
+const { renderOrchardMap, renderAttractionMap, renderOrchardCards } = require('../app.js');
 
 test('在同一張地圖上為每個有座標的紅棗園建立標記與資訊視窗', () => {
   const calls = { maps: 0, markers: [], bounds: null, order: [], icons: [], tileUrl: '' };
@@ -84,4 +84,20 @@ test('其他景點與美食顯示在同一張地圖上', () => {
   assert.match(calls.markers[1].popup, /乙餐廳/);
   assert.notDeepEqual(calls.markers[0].options.icon, calls.markers[1].options.icon);
   assert.deepEqual(calls.bounds.positions, [[24.47, 120.82], [24.49, 120.81]]);
+});
+
+test('紅棗園地圖下方恢復一園一格的卡片', () => {
+  const container = { innerHTML: '' };
+  const counter = { textContent: '' };
+  const orchards = [
+    { name: '甲紅棗園', phone: '0912-345-678', map: 'https://maps.example/a', detail: '入園採果', social: '', note: '' },
+    { name: '乙紅棗園', phone: '', map: 'https://maps.example/b', detail: '', social: '', note: '友善耕作' }
+  ];
+
+  renderOrchardCards(container, counter, orchards, '友善');
+
+  assert.doesNotMatch(container.innerHTML, /甲紅棗園/);
+  assert.match(container.innerHTML, /乙紅棗園/);
+  assert.match(container.innerHTML, /place-card--orchard/);
+  assert.equal(counter.textContent, '共 1 筆');
 });

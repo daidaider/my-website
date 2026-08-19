@@ -105,6 +105,14 @@
   box-shadow: 0 0 0 2px #b98c65, 0 18px 45px rgba(69, 54, 37, .16);
 }
 
+.orchard-list-section {
+  padding-top: .5rem;
+}
+
+.orchard-list-section .section-heading {
+  margin-bottom: 1.25rem;
+}
+
 .jujube-map-icon {
   background: transparent !important;
   border: 0 !important;
