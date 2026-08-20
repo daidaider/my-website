@@ -101,3 +101,20 @@ test('紅棗園地圖下方恢復一園一格的卡片', () => {
   assert.match(container.innerHTML, /place-card--orchard/);
   assert.equal(counter.textContent, '共 1 筆');
 });
+
+test('逢彬紅棗園卡片顯示園區照片', () => {
+  const container = { innerHTML: '' };
+  const counter = { textContent: '' };
+
+  renderOrchardCards(container, counter, [{
+    name: '逢彬紅棗園',
+    phone: '',
+    map: 'https://maps.example/fengbin',
+    detail: '',
+    social: '',
+    note: ''
+  }]);
+
+  assert.match(container.innerHTML, /class="orchard-photo"/);
+  assert.match(container.innerHTML, /assets\/orchards\/fengbin\.jpg/);
+});

@@ -47,6 +47,7 @@ const ATTRACTION_COORDINATES = {
 };
 
 const ORCHARD_PHOTOS = {
+  '逢彬紅棗園': 'assets/orchards/fengbin.jpg',
   '吉秀紅棗園': 'assets/orchards/jixiu.svg',
   '錦城紅棗園': 'assets/orchards/jincheng.svg',
   '來來紅棗園': 'assets/orchards/lailai.svg',
