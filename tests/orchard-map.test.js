@@ -1,5 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
 global.document = {
   body: { dataset: {} },
@@ -117,4 +119,21 @@ test('逢彬紅棗園卡片顯示園區照片', () => {
 
   assert.match(container.innerHTML, /class="orchard-photo"/);
   assert.match(container.innerHTML, /assets\/orchards\/fengbin\.jpg/);
+});
+
+test('逢彬紅棗園照片為向左旋轉後的直式方向', () => {
+  const jpeg = fs.readFileSync(path.join(__dirname, '..', 'assets', 'orchards', 'fengbin.jpg'));
+  let offset = 2;
+  let dimensions;
+  while (offset < jpeg.length) {
+    const marker = jpeg[offset + 1];
+    const length = jpeg.readUInt16BE(offset + 2);
+    if (marker >= 0xc0 && marker <= 0xc3) {
+      dimensions = { height: jpeg.readUInt16BE(offset + 5), width: jpeg.readUInt16BE(offset + 7) };
+      break;
+    }
+    offset += 2 + length;
+  }
+
+  assert.deepEqual(dimensions, { width: 900, height: 1200 });
 });
