@@ -1,0 +1,22 @@
+.home-cards {
+  max-width: 1240px;
+  margin: -55px auto 70px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.feature-card {
+  min-height: 280px;
+  padding: 34px;
+}
+
+@media (max-width: 720px) {
+  .home-cards {
+    grid-template-columns: 1fr;
+    margin: -35px auto 35px;
+  }
+
+  .feature-card {
+    min-height: 235px;
+    padding: 28px;
+  }
+}

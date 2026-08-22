@@ -16,6 +16,17 @@ test('封面提供前往教具頁的入口卡片', () => {
   );
 });
 
+test('封面三張分類卡片放大並置中排列', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const css = fs.readFileSync('home-cards.css', 'utf8');
+  assert.match(html, /<link rel="stylesheet" href="home-cards\.css\?v=20260822" \/>/);
+  assert.match(
+    css,
+    /\.home-cards\s*\{[^}]*max-width:\s*1240px[^}]*margin:\s*-55px auto 70px[^}]*grid-template-columns:\s*repeat\(3, 1fr\)[^}]*\}/,
+  );
+  assert.match(css, /\.feature-card\s*\{[^}]*min-height:\s*280px[^}]*padding:\s*34px[^}]*\}/);
+});
+
 test('每個內頁都能從主選單前往教具頁', () => {
   for (const page of innerPages) {
     const html = fs.readFileSync(page, 'utf8');
