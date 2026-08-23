@@ -9,6 +9,15 @@
   padding: 34px;
 }
 
+.teaching-aids-card {
+  background-image: url("assets/teaching-aids/jujube-growth-board.png");
+  background-position: center;
+}
+
+.teaching-aids-card::before {
+  background: linear-gradient(135deg, rgba(71, 42, 26, .72), rgba(133, 67, 28, .45));
+}
+
 @media (max-width: 720px) {
   .home-cards {
     grid-template-columns: 1fr;

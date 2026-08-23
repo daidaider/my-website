@@ -39,11 +39,16 @@ test('每個內頁都能從主選單前往食農教育頁', () => {
   }
 });
 
-test('食農教育頁顯示名稱與紅棗成長教具圖片', () => {
+test('紅棗成長教具圖片作為封面食農教育卡片底圖', () => {
   const html = fs.readFileSync('teaching-aids.html', 'utf8');
+  const css = fs.readFileSync('home-cards.css', 'utf8');
   assert.match(html, /<a class="active" href="teaching-aids\.html">食農教育<\/a>/);
   assert.match(html, /<h1>食農教育<\/h1>/);
-  assert.match(html, /<img[^>]+src="assets\/teaching-aids\/jujube-growth-board\.png"[^>]+alt="紅棗成長歷程食農教育教具"/);
+  assert.match(
+    css,
+    /\.teaching-aids-card\s*\{[^}]*background-image:\s*url\("assets\/teaching-aids\/jujube-growth-board\.png"\)[^}]*\}/,
+  );
+  assert.doesNotMatch(html, /jujube-growth-board\.png|teaching-aid-content/);
   assert.doesNotMatch(html, /準備中|敬請期待/);
   assert.ok(fs.existsSync('assets/teaching-aids/jujube-growth-board.png'));
 });
