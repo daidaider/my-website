@@ -11,10 +11,10 @@
 
 .teaching-aids-card {
   background-image: url("assets/teaching-aids/jujube-growth-board.png");
-  background-size: 80% auto;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #d7ae79;
+  background-color: #fff;
 }
 
 .teaching-aids-card::before {

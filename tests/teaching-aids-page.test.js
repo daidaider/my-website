@@ -20,7 +20,7 @@ test('封面提供前往食農教育頁的入口卡片', () => {
 test('封面三張分類卡片放大並置中排列', () => {
   const html = fs.readFileSync('index.html', 'utf8');
   const css = fs.readFileSync('home-cards.css', 'utf8');
-  assert.match(html, /<link rel="stylesheet" href="home-cards\.css\?v=20260823-food-education-card-80pct" \/>/);
+  assert.match(html, /<link rel="stylesheet" href="home-cards\.css\?v=20260823-food-education-card-contain-white" \/>/);
   assert.match(
     css,
     /\.home-cards\s*\{[^}]*max-width:\s*1240px[^}]*margin:\s*-55px auto 70px[^}]*grid-template-columns:\s*repeat\(3, 1fr\)[^}]*\}/,
@@ -46,7 +46,7 @@ test('紅棗成長教具圖片作為封面食農教育卡片底圖', () => {
   assert.match(html, /<h1>食農教育<\/h1>/);
   assert.match(
     css,
-    /\.teaching-aids-card\s*\{[^}]*background-image:\s*url\("assets\/teaching-aids\/jujube-growth-board\.png"\)[^}]*background-size:\s*80% auto[^}]*background-position:\s*center[^}]*background-repeat:\s*no-repeat[^}]*\}/,
+    /\.teaching-aids-card\s*\{[^}]*background-image:\s*url\("assets\/teaching-aids\/jujube-growth-board\.png"\)[^}]*background-size:\s*contain[^}]*background-position:\s*center[^}]*background-repeat:\s*no-repeat[^}]*background-color:\s*#fff[^}]*\}/,
   );
   assert.doesNotMatch(html, /jujube-growth-board\.png|teaching-aid-content/);
   assert.doesNotMatch(html, /準備中|敬請期待/);
