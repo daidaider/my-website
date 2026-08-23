@@ -1,0 +1,17 @@
+.teaching-aid-content {
+  margin: 0 auto 40px;
+}
+
+.teaching-aid-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(62, 48, 28, .16);
+}
+
+@media (max-width: 720px) {
+  .teaching-aid-content img {
+    border-radius: 12px;
+  }
+}

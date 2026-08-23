@@ -8,12 +8,13 @@ const innerPages = [
   'teaching-aids.html',
 ];
 
-test('封面提供前往教具頁的入口卡片', () => {
+test('封面提供前往食農教育頁的入口卡片', () => {
   const html = fs.readFileSync('index.html', 'utf8');
   assert.match(
     html,
-    /<a class="feature-card teaching-aids-card" href="teaching-aids\.html">[\s\S]*?<h2>教具<\/h2>[\s\S]*?<\/a>/,
+    /<a class="feature-card teaching-aids-card" href="teaching-aids\.html">[\s\S]*?<h2>食農教育<\/h2>[\s\S]*?<span>食農教育內容　→<\/span>[\s\S]*?<\/a>/,
   );
+  assert.doesNotMatch(html, /食農教育內容準備中/);
 });
 
 test('封面三張分類卡片放大並置中排列', () => {
@@ -27,20 +28,22 @@ test('封面三張分類卡片放大並置中排列', () => {
   assert.match(css, /\.feature-card\s*\{[^}]*min-height:\s*280px[^}]*padding:\s*34px[^}]*\}/);
 });
 
-test('每個內頁都能從主選單前往教具頁', () => {
+test('每個內頁都能從主選單前往食農教育頁', () => {
   for (const page of innerPages) {
     const html = fs.readFileSync(page, 'utf8');
     assert.match(
       html,
-      /<nav aria-label="主選單">[\s\S]*?<a(?: class="active")? href="teaching-aids\.html">教具<\/a>[\s\S]*?<\/nav>/,
-      `${page} 的主選單缺少教具連結`,
+      /<nav aria-label="主選單">[\s\S]*?<a(?: class="active")? href="teaching-aids\.html">食農教育<\/a>[\s\S]*?<\/nav>/,
+      `${page} 的主選單缺少食農教育連結`,
     );
   }
 });
 
-test('教具頁標示目前所在頁面與準備中狀態', () => {
+test('食農教育頁顯示名稱與紅棗成長教具圖片', () => {
   const html = fs.readFileSync('teaching-aids.html', 'utf8');
-  assert.match(html, /<a class="active" href="teaching-aids\.html">教具<\/a>/);
-  assert.match(html, /<h1>教具<\/h1>/);
-  assert.match(html, /內容準備中/);
+  assert.match(html, /<a class="active" href="teaching-aids\.html">食農教育<\/a>/);
+  assert.match(html, /<h1>食農教育<\/h1>/);
+  assert.match(html, /<img[^>]+src="assets\/teaching-aids\/jujube-growth-board\.png"[^>]+alt="紅棗成長歷程食農教育教具"/);
+  assert.doesNotMatch(html, /準備中|敬請期待/);
+  assert.ok(fs.existsSync('assets/teaching-aids/jujube-growth-board.png'));
 });
