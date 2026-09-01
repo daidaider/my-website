@@ -14,3 +14,10 @@ export function getCardIdFromSearch(search) {
   const id = new URLSearchParams(search).get('id');
   return id && /^\d{3}$/.test(id) ? id : null;
 }
+
+export function cardSpriteStyle(card) {
+  return {
+    backgroundImage: `url("assets/cards/card-${card.id}.jpg")`,
+    backgroundPosition: 'center',
+  };
+}

@@ -7,6 +7,7 @@ import {
   findCardById,
   getCardIdFromSearch,
   rarityStars,
+  cardSpriteStyle,
 } from '../assets/js/card-utils.mjs';
 import { buildCardViewModel } from '../assets/js/card-page.mjs';
 import { getShopState } from '../assets/js/product-page.mjs';
@@ -62,4 +63,23 @@ test('沒有賣貨便網址時維持停用狀態', () => {
 test('只有 HTTPS 賣貨便網址能啟用購買連結', () => {
   assert.equal(getShopState('https://myship.7-11.com.tw/example').enabled, true);
   assert.equal(getShopState('javascript:alert(1)').enabled, false);
+});
+
+test('每種生物都有唯一且合法的實體卡位置', () => {
+  const positions = CARD_DATA.map((card) => `${card.sheet}-${card.column}-${card.row}`);
+  assert.equal(new Set(positions).size, CARD_DATA.length);
+  assert.ok(CARD_DATA.every((card) => card.sheet >= 1 && card.sheet <= 4));
+  assert.ok(CARD_DATA.every((card) => card.column >= 0 && card.column <= 3));
+  assert.ok(CARD_DATA.every((card) => card.row >= 0 && card.row <= 1));
+});
+
+test('實體卡使用精準裁切後的獨立圖片', () => {
+  assert.deepEqual(cardSpriteStyle({ id: '001' }), {
+    backgroundImage: 'url("assets/cards/card-001.jpg")',
+    backgroundPosition: 'center',
+  });
+  assert.deepEqual(cardSpriteStyle({ id: '030' }), {
+    backgroundImage: 'url("assets/cards/card-030.jpg")',
+    backgroundPosition: 'center',
+  });
 });

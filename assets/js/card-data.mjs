@@ -1,4 +1,4 @@
-export const CARD_DATA = [
+const BASE_CARD_DATA = [
   { id: '001', category: '鳥類', nameZh: '綠繡眼', nameEn: "Swinhoe's White-eye", scientificName: 'Zosterops simplex / Zosterops japonicus', rarity: 1, rarityLabel: '極常發現', descriptionZh: '綠衣配白眼圈，果樹間最活潑的跳躍精靈。', descriptionEn: 'Dressed in green with white-rimmed eyes, the liveliest jumping sprite among the fruit trees.', protectionStatus: '', image: '' },
   { id: '002', category: '鳥類', nameZh: '小雨燕', nameEn: 'House Swift', scientificName: 'Apus nipalensis', rarity: 1, rarityLabel: '極常發現', descriptionZh: '鐮刀雙翼高速劃過天空，腰部顯眼白色羽塊。', descriptionEn: 'The scythe-shaped wings streak across the sky, with noticeable white feather patches on the waist.', protectionStatus: '', image: '' },
   { id: '003', category: '鳥類', nameZh: '斑文鳥', nameEn: 'Scaly-breasted Munia', scientificName: 'Lonchura punctulata', rarity: 1, rarityLabel: '極常發現', descriptionZh: '體型小巧，腹部滿布鱗紋，成群穿梭草叢間。', descriptionEn: 'Small in size, with a belly covered in scales, they move through the grass in groups.', protectionStatus: '', image: '' },
@@ -30,3 +30,23 @@ export const CARD_DATA = [
   { id: '029', category: '魚類', nameZh: '蓋斑鬥魚', nameEn: 'Paradise Fish', scientificName: 'Macropodus opercularis', rarity: 3, rarityLabel: '季節性或微棲地限定', descriptionZh: '鰓蓋具藍斑體側藍紅，可直接呼吸空氣。', descriptionEn: 'Its gill covers have blue spots and its sides are blue-red; it can breathe air directly.', protectionStatus: '', image: '' },
   { id: '030', category: '魚類', nameZh: '台灣鮠', nameEn: 'Taiwan Bullhead Catfish', scientificName: 'Tachysurus taiwanensis', rarity: 4, rarityLabel: '罕見且受脅', descriptionZh: '無鱗具四對觸鬚，夜行底棲未污染溪流。', descriptionEn: 'The gill cover has blue spots on the sides of the body and is blue-red, allowing direct breathing of air.', protectionStatus: '', image: '', sourceNote: '原文件英文描述疑似與蓋斑鬥魚重複，待內容方確認。' },
 ];
+
+const CARD_SPRITES = {
+  '001': { sheet: 3, column: 2, row: 0 }, '002': { sheet: 4, column: 0, row: 0 },
+  '003': { sheet: 4, column: 1, row: 0 }, '004': { sheet: 4, column: 2, row: 0 },
+  '005': { sheet: 4, column: 3, row: 0 }, '006': { sheet: 3, column: 0, row: 0 },
+  '007': { sheet: 4, column: 0, row: 1 }, '008': { sheet: 4, column: 1, row: 1 },
+  '009': { sheet: 3, column: 1, row: 0 }, '010': { sheet: 4, column: 2, row: 1 },
+  '011': { sheet: 4, column: 3, row: 1 }, '012': { sheet: 1, column: 0, row: 0 },
+  '013': { sheet: 3, column: 0, row: 1 }, '014': { sheet: 1, column: 1, row: 0 },
+  '015': { sheet: 1, column: 2, row: 0 }, '016': { sheet: 3, column: 3, row: 0 },
+  '017': { sheet: 1, column: 3, row: 0 }, '018': { sheet: 1, column: 0, row: 1 },
+  '019': { sheet: 1, column: 1, row: 1 }, '020': { sheet: 3, column: 2, row: 1 },
+  '021': { sheet: 1, column: 2, row: 1 }, '022': { sheet: 1, column: 3, row: 1 },
+  '023': { sheet: 2, column: 0, row: 0 }, '024': { sheet: 3, column: 1, row: 1 },
+  '025': { sheet: 2, column: 1, row: 0 }, '026': { sheet: 2, column: 2, row: 0 },
+  '027': { sheet: 2, column: 3, row: 0 }, '028': { sheet: 3, column: 3, row: 1 },
+  '029': { sheet: 2, column: 0, row: 1 }, '030': { sheet: 2, column: 1, row: 1 },
+};
+
+export const CARD_DATA = BASE_CARD_DATA.map((card) => ({ ...card, ...CARD_SPRITES[card.id] }));

@@ -1,17 +1,23 @@
 import { CARD_DATA } from './card-data.mjs';
-import { filterCardsByCategory, rarityStars } from './card-utils.mjs';
+import { cardSpriteStyle, filterCardsByCategory } from './card-utils.mjs';
+
+const cardImageStyles = typeof document === 'undefined' ? null : document.createElement('link');
+if (cardImageStyles) {
+  cardImageStyles.rel = 'stylesheet';
+  cardImageStyles.href = 'card-images.css';
+  document.head.append(cardImageStyles);
+}
 
 export function renderCardList(cards, container) {
   container.replaceChildren(...cards.map((card) => {
     const link = document.createElement('a');
-    link.className = `ecology-card ecology-card--rarity-${card.rarity}`;
+    link.className = 'ecology-card';
     link.href = `card.html?id=${encodeURIComponent(card.id)}`;
     link.setAttribute('aria-label', `${card.nameZh}，稀有度 ${card.rarity} 星`);
-    link.innerHTML = '<span class="ecology-card__meta"></span><div class="ecology-card__art" aria-hidden="true"></div><h2></h2><p class="ecology-card__latin"></p><p class="ecology-card__rarity"></p>';
-    link.querySelector('.ecology-card__meta').textContent = `${card.category} · ${card.id}`;
-    link.querySelector('h2').textContent = card.nameZh;
-    link.querySelector('.ecology-card__latin').textContent = card.scientificName;
-    link.querySelector('.ecology-card__rarity').textContent = rarityStars(card.rarity);
+    link.innerHTML = '<div class="ecology-card__image" role="img"></div>';
+    const image = link.querySelector('.ecology-card__image');
+    Object.assign(image.style, cardSpriteStyle(card));
+    image.setAttribute('aria-label', `${card.nameZh}實體卡`);
     return link;
   }));
 }

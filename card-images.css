@@ -1,0 +1,4 @@
+.ecology-card-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.ecology-card{display:block;min-height:0;padding:0;border:0;aspect-ratio:827/1180;border-radius:18px;overflow:hidden;box-shadow:0 10px 24px #22352724}
+.ecology-card__image{width:100%;height:100%;background-size:cover;background-repeat:no-repeat}
+.physical-card-image{width:100%;aspect-ratio:827/1180;border-radius:20px;background-size:cover;background-repeat:no-repeat;box-shadow:0 20px 45px #22352722}

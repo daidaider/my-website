@@ -1,5 +1,5 @@
 import { CARD_DATA } from './card-data.mjs';
-import { findCardById, getCardIdFromSearch, rarityStars } from './card-utils.mjs';
+import { cardSpriteStyle, findCardById, getCardIdFromSearch, rarityStars } from './card-utils.mjs';
 
 export function buildCardViewModel(search) {
   const id = getCardIdFromSearch(search);
@@ -18,10 +18,10 @@ function render() {
   }
   const { card } = result;
   const setAll = (selector, value) => root.querySelectorAll(selector).forEach((element) => { element.textContent = value; });
-  root.querySelector('[data-card-id]').textContent = `CARD ${card.id}`;
-  root.querySelector('[data-category]').textContent = card.category;
+  const image = root.querySelector('[data-card-image]');
+  Object.assign(image.style, cardSpriteStyle(card));
+  image.setAttribute('aria-label', `${card.nameZh}實體卡`);
   setAll('[data-name-zh]', card.nameZh);
-  root.querySelector('[data-name-en]').textContent = card.nameEn;
   setAll('[data-scientific-name]', card.scientificName);
   root.querySelector('[data-rarity]').textContent = rarityStars(card.rarity);
   root.querySelector('[data-rarity]').setAttribute('aria-label', `稀有度 ${card.rarity} 星，共五顆星`);
