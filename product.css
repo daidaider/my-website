@@ -1,16 +1,37 @@
-.product-list{display:grid;gap:42px}
-.product-item{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);background:#f6f3ea;box-shadow:0 18px 40px #3327181c;overflow:hidden}
-.product-item__visual{display:grid;place-items:center;background:#fff;min-height:360px}
-.product-item__visual img{display:block;width:100%;height:100%;max-height:520px;object-fit:contain}
-.product-item__copy{padding:clamp(24px,4vw,48px);align-self:center}
-.product-item__copy h2{font-size:clamp(32px,3.3vw,46px);line-height:1.15;margin:6px 0 18px}
-.product-item__copy small{display:block;margin-top:12px;color:#6b645b}
-.product-item__detail{grid-column:1/-1;margin:0;padding:28px;background:#fff}
-.product-item__detail img{display:block;width:100%;max-height:720px;object-fit:contain}
-.product-item__detail figcaption{text-align:center;font-weight:800;font-size:20px;margin-top:14px}
-.product-highlight-grid{display:grid;grid-template-columns:.7fr 1.15fr .7fr;gap:12px;align-items:stretch}
-.product-highlight-grid img{height:100%;max-height:none;object-fit:cover}
-.product-item--jujube{border-top:10px solid #879d31}
-.product-item--water{border-top:10px solid #328ec4}
-.product-item--water .ecology-button{background:#277aa8}
-@media(max-width:760px){.product-item{grid-template-columns:1fr}.product-item__visual{min-height:0}.product-item__visual img{height:auto}.product-item__detail{grid-column:auto;padding:12px}.product-item__copy{padding:26px 20px}.product-highlight-grid{grid-template-columns:1fr}.product-highlight-grid img{height:auto}}
+.product-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:920px;margin:0 auto}
+.product-card{display:grid;grid-template-rows:260px 1fr;background:#f7f4eb;color:inherit;text-decoration:none;overflow:hidden;box-shadow:0 14px 32px #3327181c;transition:transform .18s ease,box-shadow .18s ease}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px #3327182b}
+.product-card:focus-visible{outline:4px solid #1c5d9a;outline-offset:4px}
+.product-card>img{width:100%;height:100%;object-fit:contain;background:#fff}
+.product-card>div{padding:24px}
+.product-card h2{font-size:clamp(28px,3vw,38px);line-height:1.2;margin:6px 0 22px}
+.product-card--jujube{border-top:8px solid #879d31}
+.product-card--water{border-top:8px solid #328ec4}
+.product-card--water .ecology-button{background:#277aa8}
+.product-detail-page{max-width:1180px}
+.product-back{display:inline-block;margin-bottom:18px;color:inherit;font-weight:800}
+.product-detail-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);background:#f7f4eb;border-top:10px solid #879d31;box-shadow:0 18px 40px #3327181c}
+.product-detail-hero--water{border-color:#328ec4}
+.product-detail-hero>img{width:100%;height:100%;max-height:560px;object-fit:contain;background:#fff}
+.product-detail-hero>div{padding:clamp(28px,5vw,56px);align-self:center}
+.product-detail-hero h1{font-size:clamp(38px,5vw,58px);line-height:1.15;margin:8px 0 20px}
+.product-detail-hero .ecology-button{margin-top:18px}
+.product-detail-hero--water .ecology-button{background:#277aa8}
+.product-detail-content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:30px}
+.product-info-block,.product-specs,.product-coming-soon{padding:clamp(24px,4vw,38px);background:#fff;box-shadow:0 10px 26px #33271812}
+.product-info-block h2,.product-specs h2,.product-coming-soon h2{margin-top:0;font-size:28px;color:#8f260d}
+.product-info-block--full{grid-column:1/-1}
+.product-info-block ul{margin:0;padding-left:1.35em;line-height:1.9}
+.product-detail-image{margin:0;background:#fff;padding:18px;box-shadow:0 10px 26px #33271812}
+.product-detail-image--wide{grid-column:1/-1}
+.product-detail-image img{display:block;width:100%;height:auto}
+.product-detail-image figcaption{text-align:center;font-weight:800;font-size:20px;margin-top:12px}
+.product-highlight-grid{display:grid;grid-template-columns:.7fr 1.15fr .7fr;gap:12px;padding:16px;background:#fff}
+.product-highlight-grid img{display:block;width:100%;height:100%;object-fit:cover}
+.product-specs dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:0}
+.product-specs dl div{display:grid;grid-template-columns:110px 1fr;padding:14px;border-bottom:1px solid #ded9cc}
+.product-specs dt{font-weight:800}.product-specs dd{margin:0}
+.product-coming-soon{background:#eef5e4;text-align:center}.product-coming-soon p{margin-bottom:0}
+.product-closing{margin:30px 0 0;padding:28px;text-align:center;font-size:clamp(24px,3vw,34px);font-weight:900;background:#eef5e4;color:#526d16}
+.product-closing--water{background:#e7f3f9;color:#17638d}
+@media(max-width:760px){.product-card-grid,.product-detail-hero,.product-detail-content{grid-template-columns:1fr}.product-card{grid-template-rows:auto}.product-card>img{height:auto}.product-detail-hero>img{height:auto}.product-detail-hero>div{padding:28px 20px}.product-info-block--full,.product-detail-image--wide{grid-column:auto}.product-highlight-grid{grid-template-columns:1fr}.product-highlight-grid img{height:auto}.product-specs dl{grid-template-columns:1fr}.product-specs dl div{grid-template-columns:95px 1fr}}
