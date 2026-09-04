@@ -10,7 +10,7 @@ import {
   cardSpriteStyle,
 } from '../assets/js/card-utils.mjs';
 import { buildCardViewModel } from '../assets/js/card-page.mjs';
-import { getShopState } from '../assets/js/product-page.mjs';
+import { getShopState, renderShopActions } from '../assets/js/product-page.mjs';
 
 test('拒絕重複或格式錯誤的卡片編號', () => {
   const ids = CARD_DATA.map((card) => card.id);
@@ -63,6 +63,19 @@ test('沒有賣貨便網址時維持停用狀態', () => {
 test('只有 HTTPS 賣貨便網址能啟用購買連結', () => {
   assert.equal(getShopState('https://myship.7-11.com.tw/example').enabled, true);
   assert.equal(getShopState('javascript:alert(1)').enabled, false);
+});
+
+test('每個商品都顯示尚未開放的賣貨便按鈕', () => {
+  const roots = [{}, {}].map(() => ({ replaceChildren(element) { this.element = element; } }));
+  const fakeDocument = {
+    querySelectorAll: () => roots,
+    createElement: (tagName) => ({ tagName }),
+  };
+  renderShopActions(fakeDocument, getShopState(''));
+  assert.deepEqual(roots.map(({ element }) => ({ tagName: element.tagName, disabled: element.disabled, label: element.textContent })), [
+    { tagName: 'button', disabled: true, label: '賣貨便即將開放' },
+    { tagName: 'button', disabled: true, label: '賣貨便即將開放' },
+  ]);
 });
 
 test('每種生物都有唯一且合法的實體卡位置', () => {
